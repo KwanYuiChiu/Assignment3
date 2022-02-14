@@ -20,12 +20,16 @@ public class Simulator
     private static final int DEFAULT_DEPTH = 80;
     // The probability that a fox will be created in any given grid position.
     private static final double FOX_CREATION_PROBABILITY = 0.02;
+    // The probability that a fox will be created in any given grid position.
+    private static final double SNAKE_CREATION_PROBABILITY = 0.02;
     // The probability that a rabbit will be created in any given grid position.
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
     // The probability that a rabbit will be created in any given grid position.
     private static final double GIRAFFE_CREATION_PROBABILITY = 0.02;    
+    // The probability that a mouse will be created in any given grid position.
+    private static final double MOUSE_CREATION_PROBABILITY = 0.02;    
     // The probability that a rabbit will be created in any given grid position.
-    private static final double GRASS_CREATION_PROBABILITY = 0.1;
+    private static final double GRASS_CREATION_PROBABILITY = 0.09;
 
     // List of animals in the field.
     private List<Entity> entities;
@@ -67,6 +71,8 @@ public class Simulator
         view.setColor(Fox.class, Color.BLUE);
         view.setColor(Giraffe.class, Color.MAGENTA);
         view.setColor(Grass.class, Color.GREEN);
+        view.setColor(Mouse.class, new Color(165, 42, 42));
+        view.setColor(Snake.class, Color.RED);
         // Setup a valid starting point.
         reset();
     }
@@ -152,10 +158,20 @@ public class Simulator
                     Fox fox = new Fox(true, gender, field, location);
                     entities.add(fox);
                 }
+                else if(rand.nextDouble() <= SNAKE_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Snake snake = new Snake(true, gender, field, location);
+                    entities.add(snake);
+                }
                 else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Rabbit rabbit = new Rabbit(true, gender, field, location);
                     entities.add(rabbit);
+                }
+                else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Mouse mouse = new Mouse(true, gender, field, location);
+                    entities.add(mouse);
                 }
                 else if(rand.nextDouble() <= GIRAFFE_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
