@@ -24,6 +24,8 @@ public class Fox extends Consumer
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
     private static final int RABBIT_FOOD_VALUE = 9;
+    // number of steps a fox can go before it has to eat again.
+    private static final int MOUSE_FOOD_VALUE = 12;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -127,6 +129,15 @@ public class Fox extends Consumer
                     return where;
                 }
             }
+            else if(animal instanceof Mouse) {
+                Mouse mouse = (Mouse) animal;
+                if(mouse.isAlive()) { 
+                    mouse.setDead();
+                    foodLevel = MOUSE_FOOD_VALUE;
+                    return where;
+                }
+            }
+            
         }
         return null;
     }
