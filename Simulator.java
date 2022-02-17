@@ -30,6 +30,8 @@ public class Simulator
     private static final double MOUSE_CREATION_PROBABILITY = 0.02;    
     // The probability that a rabbit will be created in any given grid position.
     private static final double GRASS_CREATION_PROBABILITY = 0.09;
+    // The probability that a rabbit will be created in any given grid position.
+    private static final double TIGER_CREATION_PROBABILITY = 0.01;
 
     // List of animals in the field.
     private List<Entity> entities;
@@ -73,6 +75,7 @@ public class Simulator
         view.setColor(Grass.class, Color.GREEN);
         view.setColor(Mouse.class, new Color(165, 42, 42));
         view.setColor(Snake.class, Color.RED);
+        view.setColor(Tiger.class, Color.BLACK);
         // Setup a valid starting point.
         reset();
     }
@@ -168,7 +171,7 @@ public class Simulator
                     Rabbit rabbit = new Rabbit(true, gender, field, location);
                     entities.add(rabbit);
                 }
-                else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
+                else if(rand.nextDouble() <= MOUSE_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Mouse mouse = new Mouse(true, gender, field, location);
                     entities.add(mouse);
@@ -177,6 +180,11 @@ public class Simulator
                     Location location = new Location(row, col);
                     Giraffe giraffe= new Giraffe(true, gender, field, location);
                     entities.add(giraffe);
+                }
+                else if(rand.nextDouble() <= TIGER_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Tiger tiger= new Tiger(true, gender, field, location);
+                    entities.add(tiger);
                 }
                 // else leave the location empty.
             }
