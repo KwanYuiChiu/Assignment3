@@ -20,7 +20,7 @@ public class Field
     private int depth, width;
     // Storage for the animals.
     private Object[][] field;
-
+    private int step;
     /**
      * Represent a field of the given dimensions.
      * @param depth The depth of the field.
@@ -30,7 +30,19 @@ public class Field
     {
         this.depth = depth;
         this.width = width;
+        this.step = 0;
         field = new Object[depth][width];
+    }
+    
+    public void increaseStep(){
+        step++;
+    }
+    
+    /**
+     * Whether it is daytime currently
+     */
+    public boolean isDay(){
+        return step % 2 == 0;
     }
     
     /**

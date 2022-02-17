@@ -60,10 +60,9 @@ public class Rabbit extends Consumer
             giveBirth(newRabbits);            
             // Try to move into a free location.
             Location newLocation = getField().freeAdjacentLocation(getLocation());
-            if(newLocation != null) {
+            if(newLocation != null && getField().isDay()) {
                 setLocation(newLocation);
-            }
-            else {
+            }else if (newLocation == null && getField().isDay()){
                 // Overcrowding.
                 setDead();
             }

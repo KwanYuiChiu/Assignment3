@@ -110,7 +110,9 @@ public class Simulator
     public void simulateOneStep()
     {
         step++;
-
+        field.increaseStep();
+        
+        
         // Provide space for newborn animals.
         List<Entity> newEntities = new ArrayList<>();        
         // Let all rabbits act.

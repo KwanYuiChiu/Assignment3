@@ -20,7 +20,7 @@ public class Tiger extends ApexPredator
     // The likelihood of a Tiger breeding.
     private static final double BREEDING_PROBABILITY = 0.06;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
+    private static final int MAX_LITTER_SIZE = 5;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a Tiger can go before it has to eat again.
     private static final int RABBIT_FOOD_VALUE = 4;
