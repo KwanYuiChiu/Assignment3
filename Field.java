@@ -20,6 +20,7 @@ public class Field
     private int depth, width;
     // Storage for the animals.
     private Object[][] field;
+    private Weather weather;
     private int step;
     /**
      * Represent a field of the given dimensions.
@@ -31,11 +32,13 @@ public class Field
         this.depth = depth;
         this.width = width;
         this.step = 0;
+        this.weather = new Weather();
         field = new Object[depth][width];
     }
     
     public void increaseStep(){
         step++;
+        this.weather.update();
     }
     
     /**
@@ -214,5 +217,12 @@ public class Field
     public int getWidth()
     {
         return width;
+    }
+    
+    /**
+     * 
+     */
+    public String getWeatherCondition(){
+        return this.weather.getDescription();
     }
 }
