@@ -25,9 +25,9 @@ public class Simulator
     // The probability that a rabbit will be created in any given grid position.
     private static final double RABBIT_CREATION_PROBABILITY = 0.04;    
     // The probability that a rabbit will be created in any given grid position.
-    private static final double GIRAFFE_CREATION_PROBABILITY = 0.02;    
+    private static final double GIRAFFE_CREATION_PROBABILITY = 0.04;    
     // The probability that a mouse will be created in any given grid position.
-    private static final double MOUSE_CREATION_PROBABILITY = 0.02;    
+    private static final double MOUSE_CREATION_PROBABILITY = 0.04;    
     // The probability that a rabbit will be created in any given grid position.
     private static final double GRASS_CREATION_PROBABILITY = 0.09;
     // The probability that a rabbit will be created in any given grid position.
