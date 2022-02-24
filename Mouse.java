@@ -59,7 +59,12 @@ public class Mouse extends Consumer
         if(super.isAlive()) {
             giveBirth(newMice);            
             // Try to move into a free location.
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
+            Location newLocation = findFood();
+            //if  no food is found move to a new location
+            if(newLocation ==  null){
+                newLocation = getField().freeAdjacentLocation(getLocation());
+            }
+            //See if it is possible to move
             if(newLocation != null) {
                 setLocation(newLocation);
             }

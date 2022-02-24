@@ -58,11 +58,16 @@ public class Rabbit extends Consumer
         incrementAge();
         if(super.isAlive()) {
             giveBirth(newRabbits);            
-            // Try to move into a free location.
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
+            // Move to a source of food if found.
+            Location newLocation = findFood();
+            if(newLocation == null){
+                newLocation = getField().freeAdjacentLocation(getLocation());
+            }
+            //if no food is found, move to a  new location
             if(newLocation != null && getField().isDay()) {
                 setLocation(newLocation);
-            }else if (newLocation == null && getField().isDay()){
+            }
+            else if (newLocation == null && getField().isDay()){
                 // Overcrowding.
                 setDead();
             }
