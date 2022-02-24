@@ -32,6 +32,8 @@ public class Simulator
     private static final double GRASS_CREATION_PROBABILITY = 0.09;
     // The probability that a rabbit will be created in any given grid position.
     private static final double TIGER_CREATION_PROBABILITY = 0.01;
+    // The probability that a acacia will be created in any given grid position.
+    private static final double ACACIA_CREATION_PROBABILITY = 0.045;
 
     // List of animals in the field.
     private List<Entity> entities;
@@ -76,6 +78,7 @@ public class Simulator
         view.setColor(Mouse.class, new Color(165, 42, 42));
         view.setColor(Snake.class, Color.RED);
         view.setColor(Tiger.class, Color.BLACK);
+        view.setColor(Acacia.class, new Color(0,102,0));
         // Setup a valid starting point.
         reset();
     }
@@ -157,6 +160,11 @@ public class Simulator
                     Location location = new Location(row, col);
                     Grass grass = new Grass(field, location);
                     entities.add(grass);
+                }
+                else if(rand.nextDouble() <= ACACIA_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Acacia acacia = new Acacia(field, location);
+                    entities.add(acacia);
                 }
                 else if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);

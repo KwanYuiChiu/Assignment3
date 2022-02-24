@@ -23,7 +23,7 @@ public class Giraffe extends Consumer
     private static final int MAX_LITTER_SIZE = 2;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a Giraffe can go before it has to eat again.
-    private static final int LEAVES_FOOD_VALUE = 5;
+    private static final int ACACIA_FOOD_VALUE = 5;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -46,11 +46,11 @@ public class Giraffe extends Consumer
         super(female, field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            foodLevel = rand.nextInt(LEAVES_FOOD_VALUE);
+            foodLevel = rand.nextInt(ACACIA_FOOD_VALUE);
         }
         else {
             age = 0;
-            foodLevel = LEAVES_FOOD_VALUE;
+            foodLevel = ACACIA_FOOD_VALUE;
         }
     }
     
@@ -119,11 +119,11 @@ public class Giraffe extends Consumer
         while(it.hasNext()) {
             Location where = it.next();
             Object plant = field.getObjectAt(where);
-            if(plant instanceof Grass) {
-                Grass grass = (Grass) plant;
-                if(grass.isAlive()) { 
-                    grass.setDead();
-                    foodLevel = LEAVES_FOOD_VALUE;
+            if(plant instanceof Acacia) {
+                Acacia acacia = (Acacia) plant;
+                if(acacia.isAlive()) { 
+                    acacia.setDead();
+                    foodLevel = ACACIA_FOOD_VALUE;
                     return where;
                 }
             }
