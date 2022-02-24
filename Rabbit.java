@@ -14,16 +14,16 @@ public class Rabbit extends Consumer
     // Characteristics shared by all rabbits (class variables).
 
     // The age at which a rabbit can start to breed.
-    private static final int BREEDING_AGE = 5;
+    private static final int BREEDING_AGE = 3;
     // The age to which a rabbit can live.
-    private static final int MAX_AGE = 40;
+    private static final int MAX_AGE = 50;
     // The likelihood of a rabbit breeding.
-    private static final double BREEDING_PROBABILITY = 0.12;
+    private static final double BREEDING_PROBABILITY = 0.16;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
+    private static final int MAX_LITTER_SIZE = 3;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    private static final int CARROT_FOOD_VALUE = 2;
+    private static final int CARROT_FOOD_VALUE = 50;
     // Individual characteristics (instance fields).
     
     // The rabbit's age.
@@ -57,17 +57,20 @@ public class Rabbit extends Consumer
     {
         incrementAge();
         if(super.isAlive()) {
-            giveBirth(newRabbits);            
+            //check if the rabbit isFemale and giveBIrth
+            if(isFemale()){
+                giveBirth(newRabbits);
+            }       
             // Move to a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null){
                 newLocation = getField().freeAdjacentLocation(getLocation());
             }
             //if no food is found, move to a  new location
-            if(newLocation != null && getField().isDay()) {
+            if(newLocation != null) {
                 setLocation(newLocation);
             }
-            else if (newLocation == null && getField().isDay()){
+            else if (newLocation == null){
                 // Overcrowding.
                 setDead();
             }
@@ -96,7 +99,7 @@ public class Rabbit extends Consumer
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Location> free = field.getFreeAdjacentLocations(getLocation(), 2);
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
@@ -105,7 +108,28 @@ public class Rabbit extends Consumer
             newRabbits.add(young);
         }
     }
-        
+    
+    /**
+     * This method checks if there is any male rabbits nearby so 
+     * @return boolean there is a male nearby
+     */
+    private boolean canFindMaleRabbit(int distance){
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation(),distance);
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            Object animal = field.getObjectAt(where);
+            if(animal instanceof Rabbit) {
+                Rabbit rabbit = (Rabbit) animal;
+                if(!rabbit.isFemale()) { 
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -117,7 +141,12 @@ public class Rabbit extends Consumer
         if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
-        return births;
+        if (canFindMaleRabbit(2)){
+            return births;
+        }
+        else{
+            return 0;
+        }
     }
 
     /**

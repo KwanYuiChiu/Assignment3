@@ -16,14 +16,14 @@ public class Mouse extends Consumer
     // The age at which a rabbit can start to breed.
     private static final int BREEDING_AGE = 5;
     // The age to which a rabbit can live.
-    private static final int MAX_AGE = 40;
+    private static final int MAX_AGE = 50;
     // The likelihood of a rabbit breeding.
-    private static final double BREEDING_PROBABILITY = 0.12;
+    private static final double BREEDING_PROBABILITY = 0.14;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 4;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    private static final int GRASS_FOOD_VALUE = 5;
+    private static final int GRASS_FOOD_VALUE = 30;
     // Individual characteristics (instance fields).
     
     // The rabbit's age.
@@ -57,7 +57,9 @@ public class Mouse extends Consumer
     {
         incrementAge();
         if(super.isAlive()) {
-            giveBirth(newMice);            
+            if(isFemale()){
+               giveBirth(newMice); 
+            }        
             // Try to move into a free location.
             Location newLocation = findFood();
             //if  no food is found move to a new location
@@ -97,7 +99,7 @@ public class Mouse extends Consumer
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Location> free = field.getFreeAdjacentLocations(getLocation(), 2);
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
@@ -107,6 +109,27 @@ public class Mouse extends Consumer
         }
     }
         
+    /**
+     * This method checks if there is any male mouse nearby so 
+     * @return boolean there is a male nearby
+     */
+    private boolean canFindMaleMouse(int distance){
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation(),distance);
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            Object animal = field.getObjectAt(where);
+            if(animal instanceof Mouse) {
+                Mouse mouse = (Mouse) animal;
+                if(!mouse.isFemale()) { 
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -118,7 +141,12 @@ public class Mouse extends Consumer
         if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
-        return births;
+        if (canFindMaleMouse(2)){
+            return births;
+        }
+        else{
+            return 0;
+        }
     }
 
     /**

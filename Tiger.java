@@ -14,22 +14,22 @@ public class Tiger extends ApexPredator
     // Characteristics shared by all Tigers (class variables).
     
     // The age at which a Tiger can start to breed.
-    private static final int BREEDING_AGE = 15;
+    private static final int BREEDING_AGE = 40;
     // The age to which a Tiger can live.
-    private static final int MAX_AGE = 100;
+    private static final int MAX_AGE = 150;
     // The likelihood of a Tiger breeding.
-    private static final double BREEDING_PROBABILITY = 0.06;
+    private static final double BREEDING_PROBABILITY = 0.051;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 5;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a Tiger can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 4;
+    private static final int RABBIT_FOOD_VALUE = 100;
     // number of steps a Tiger can go before it has to eat again.
-    private static final int MOUSE_FOOD_VALUE = 1;
+    private static final int MOUSE_FOOD_VALUE = 100;
     // number of steps a Tiger can go before it has to eat again.
-    private static final int FOX_FOOD_VALUE = 6;
+    private static final int FOX_FOOD_VALUE = 100;
     // number of steps a Tiger can go before it has to eat again.
-    private static final int GIRAFFE_FOOD_VALUE = 15;
+    private static final int GIRAFFE_FOOD_VALUE = 100;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -72,18 +72,24 @@ public class Tiger extends ApexPredator
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newTigers);            
+            if(isFemale()){
+                giveBirth(newTigers);
+            }          
             // Move towards a source of food if found.
-            Location newLocation = findFood();
+            Location newLocation = null;
+            if (!getField().isDay()){
+                newLocation = findFood();
+            }
+            
             if(newLocation == null) { 
                 // No food found - try to move to a free location.
                 newLocation = getField().freeAdjacentLocation(getLocation());
             }
             // See if it was possible to move.
-            if(newLocation != null) {
+            if(newLocation != null && !getField().isDay()) {
                 setLocation(newLocation);
             }
-            else {
+            else if(newLocation == null){
                 // Overcrowding.
                 setDead();
             }
@@ -171,7 +177,7 @@ public class Tiger extends ApexPredator
         // New Tigers are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Location> free = field.getFreeAdjacentLocations(getLocation(), 2);
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
@@ -181,6 +187,27 @@ public class Tiger extends ApexPredator
         }
     }
         
+    /**
+     * This method checks if there is any male mouse nearby so 
+     * @return boolean there is a male nearby
+     */
+    private boolean canFindMaleTiger(int distance){
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation(),distance);
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            Object animal = field.getObjectAt(where);
+            if(animal instanceof Tiger) {
+                Tiger tiger = (Tiger) animal;
+                if(!tiger.isFemale()) { 
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -192,7 +219,12 @@ public class Tiger extends ApexPredator
         if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
-        return births;
+        if (canFindMaleTiger(2)){
+            return births;
+        }
+        else{
+            return 0;
+        }
     }
 
     /**

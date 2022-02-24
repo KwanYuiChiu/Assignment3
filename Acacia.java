@@ -12,7 +12,7 @@ public class Acacia extends Plant
     // instance variables - replace the example below with your own
     private static final int GROWTH_RATE = 1;
     private static final int MAX_AGE = 10;
-    private static final double ACACIA_GROWTH_PROBABILITY = 0.08;
+    private static final double ACACIA_GROWTH_PROBABILITY = 0.10;
     private static final Random rand = Randomizer.getRandom();
     
     private int age;

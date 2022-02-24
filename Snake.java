@@ -16,15 +16,15 @@ public class Snake extends Consumer
     // The age at which a fox can start to breed.
     private static final int BREEDING_AGE = 15;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 150;
+    private static final int MAX_AGE = 70;
     // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.12;
+    private static final double BREEDING_PROBABILITY = 0.15;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 3;
+    private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int MOUSE_FOOD_VALUE = 9;
-    private static final int RABBIT_FOOD_VALUE = 6;
+    private static final int MOUSE_FOOD_VALUE = 18;
+    private static final int RABBIT_FOOD_VALUE = 20;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -67,7 +67,9 @@ public class Snake extends Consumer
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newSnakes);            
+            if(isFemale()){
+                giveBirth(newSnakes);
+            }           
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -150,7 +152,7 @@ public class Snake extends Consumer
         // New foxes are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Location> free = field.getFreeAdjacentLocations(getLocation(), 2);
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
@@ -160,6 +162,27 @@ public class Snake extends Consumer
         }
     }
         
+    /**
+     * This method checks if there is any male mouse nearby so 
+     * @return boolean there is a male nearby
+     */
+    private boolean canFindMaleSnake(int distance){
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation(),distance);
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            Object animal = field.getObjectAt(where);
+            if(animal instanceof Snake) {
+                Snake snake = (Snake) animal;
+                if(!snake.isFemale()) { 
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -171,7 +194,12 @@ public class Snake extends Consumer
         if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
-        return births;
+        if (canFindMaleSnake(2)){
+            return births;
+        }
+        else{
+            return 0;
+        }
     }
 
     /**

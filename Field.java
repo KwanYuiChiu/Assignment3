@@ -147,6 +147,23 @@ public class Field
     }
     
     /**
+     * Get a shuffled list of the free adjacent locations.
+     * @param location Get locations adjacent to this.
+     * @return A list of free adjacent locations.
+     */
+    public List<Location> getFreeAdjacentLocations(Location location, int distance)
+    {
+        List<Location> free = new LinkedList<>();
+        List<Location> adjacent = adjacentLocations(location, distance);
+        for(Location next : adjacent) {
+            if(getObjectAt(next) == null) {
+                free.add(next);
+            }
+        }
+        return free;
+    }
+    
+    /**
      * Try to find a free location that is adjacent to the
      * given location. If there is none, return null.
      * The returned location will be within the valid bounds

@@ -14,16 +14,16 @@ public class Giraffe extends Consumer
     // Characteristics shared by all giraffes (class variables).
     
     // The age at which a Giraffe can start to breed.
-    private static final int BREEDING_AGE = 15;
+    private static final int BREEDING_AGE = 10;
     // The age to which a Giraffe can live.
-    private static final int MAX_AGE = 150;
+    private static final int MAX_AGE = 100;
     // The likelihood of a Giraffe breeding.
     private static final double BREEDING_PROBABILITY = 0.08;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 2;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a Giraffe can go before it has to eat again.
-    private static final int ACACIA_FOOD_VALUE = 5;
+    private static final int ACACIA_FOOD_VALUE = 30;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -66,7 +66,9 @@ public class Giraffe extends Consumer
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newgiraffes);            
+            if(isFemale()){
+                giveBirth(newgiraffes);
+            }       
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -141,7 +143,7 @@ public class Giraffe extends Consumer
         // New giraffes are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Location> free = field.getFreeAdjacentLocations(getLocation(), 2);
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
@@ -151,6 +153,27 @@ public class Giraffe extends Consumer
         }
     }
         
+    /**
+     * This method checks if there is any male mouse nearby so 
+     * @return boolean there is a male nearby
+     */
+    private boolean canFindMaleGiraffe(int distance){
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation(),distance);
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            Object animal = field.getObjectAt(where);
+            if(animal instanceof Giraffe) {
+                Giraffe giraffe = (Giraffe) animal;
+                if(!giraffe.isFemale()) { 
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -162,7 +185,12 @@ public class Giraffe extends Consumer
         if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
-        return births;
+        if (canFindMaleGiraffe(2)){
+            return births;
+        }
+        else{
+            return 0;
+        }
     }
 
     /**
