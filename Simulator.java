@@ -19,19 +19,21 @@ public class Simulator
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
     // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
+    private static final double FOX_CREATION_PROBABILITY = 0.05;
     // The probability that a fox will be created in any given grid position.
-    private static final double SNAKE_CREATION_PROBABILITY = 0.02;
+    private static final double SNAKE_CREATION_PROBABILITY = 0.05;
     // The probability that a rabbit will be created in any given grid position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
+    private static final double RABBIT_CREATION_PROBABILITY = 0.07;    
     // The probability that a rabbit will be created in any given grid position.
-    private static final double GIRAFFE_CREATION_PROBABILITY = 0.02;    
+    private static final double GIRAFFE_CREATION_PROBABILITY = 0.06;    
     // The probability that a mouse will be created in any given grid position.
-    private static final double MOUSE_CREATION_PROBABILITY = 0.02;    
+    private static final double MOUSE_CREATION_PROBABILITY = 0.05;    
     // The probability that a rabbit will be created in any given grid position.
-    private static final double GRASS_CREATION_PROBABILITY = 0.09;
+    private static final double GRASS_CREATION_PROBABILITY = 0.06;
     // The probability that a rabbit will be created in any given grid position.
-    private static final double TIGER_CREATION_PROBABILITY = 0.01;
+    private static final double TIGER_CREATION_PROBABILITY = 0.03;
+    // The probability that a rabbit will be created in any given grid position.
+    private static final double ACACIA_CREATION_PROBABILITY = 0.06;
 
     // List of animals in the field.
     private List<Entity> entities;
@@ -69,13 +71,14 @@ public class Simulator
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        view.setColor(Rabbit.class, Color.ORANGE);
+        view.setColor(Rabbit.class, new Color(204, 204, 204));
         view.setColor(Fox.class, Color.BLUE);
         view.setColor(Giraffe.class, Color.MAGENTA);
         view.setColor(Grass.class, Color.GREEN);
-        view.setColor(Mouse.class, new Color(165, 42, 42));
+        view.setColor(Mouse.class, new Color(153, 102, 0));
         view.setColor(Snake.class, Color.RED);
-        view.setColor(Tiger.class, Color.BLACK);
+        view.setColor(Tiger.class, new Color(51,204,255));
+        view.setColor(Acacia.class, new Color(0,102,0));
         // Setup a valid starting point.
         reset();
     }
@@ -146,14 +149,18 @@ public class Simulator
     /**
      * Randomly populate the field with foxes and rabbits.
      */
-    private void populate()
-    {
+    private void populate() {
         Random rand = Randomizer.getRandom();
         field.clear();
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
                 boolean gender = rand.nextBoolean();
-                if(rand.nextDouble() <= GRASS_CREATION_PROBABILITY) {
+                if(rand.nextDouble() <= ACACIA_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Acacia acacia = new Acacia(field, location);
+                    entities.add(acacia);
+                }
+                else if(rand.nextDouble() <= GRASS_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Grass grass = new Grass(field, location);
                     entities.add(grass);

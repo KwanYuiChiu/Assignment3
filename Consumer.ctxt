@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Consumer
+comment0.text=\n\ Abstract\ class\ Consumer\ -\ write\ a\ description\ of\ the\ class\ here\n\n\ @author\ (your\ name\ here)\n\ @version\ (version\ number\ or\ date\ here)\n
+comment1.params=female\ field\ location
+comment1.target=Consumer(boolean,\ Field,\ Location)
+comment2.params=
+comment2.target=Location\ findFood()
+comment3.params=
+comment3.target=void\ eaten()
+numComments=4

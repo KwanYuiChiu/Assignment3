@@ -2,24 +2,24 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Write a description of class Grass here.
+ * Write a description of class acacia here.
  *
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Grass extends Plant
+public class Acacia extends Plant
 {
     // instance variables - replace the example below with your own
     private static final int GROWTH_RATE = 1;
     private static final int MAX_AGE = 10;
-    private static final double GRASS_GROWTH_PROBABILITY = 0.05;
+    private static final double ACACIA_GROWTH_PROBABILITY = 0.05;
     private static final Random rand = Randomizer.getRandom();
     
     private int age;
     /**
-     * Constructor for objects of class Grass
+     * Constructor for objects of class acacia
      */
-    public Grass(Field field, Location location)
+    public Acacia(Field field, Location location)
     {
         super(field, location);
         age = 0;
@@ -42,7 +42,7 @@ public class Grass extends Plant
     private int breed(){
         int total = 0;
         for (int i = 0; i < GROWTH_RATE;i++){
-            if (rand.nextDouble() <= GRASS_GROWTH_PROBABILITY){
+            if (rand.nextDouble() <= ACACIA_GROWTH_PROBABILITY){
                 total++;
             }
         }
@@ -57,7 +57,7 @@ public class Grass extends Plant
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             boolean gender = rand.nextBoolean();
-            Plant young = new Grass(field, loc);
+            Plant young = new Acacia(field, loc);
             newPlants.add(young);
         }
     }

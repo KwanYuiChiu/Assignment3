@@ -14,18 +14,18 @@ public class Fox extends Consumer
     // Characteristics shared by all foxes (class variables).
     
     // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 15;
+    private static final int BREEDING_AGE = 9;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 150;
+    private static final int MAX_AGE = 50;
     // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.08;
+    private static final double BREEDING_PROBABILITY = 0.14;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 2;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 9;
+    private static final int RABBIT_FOOD_VALUE = 40;
     // number of steps a fox can go before it has to eat again.
-    private static final int MOUSE_FOOD_VALUE = 12;
+    private static final int MOUSE_FOOD_VALUE = 40;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -68,9 +68,12 @@ public class Fox extends Consumer
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newFoxes);            
+            if(isFemale()){
+                giveBirth(newFoxes);
+            }        
             // Move towards a source of food if found.
             Location newLocation = findFood();
+            
             if(newLocation == null) { 
                 // No food found - try to move to a free location.
                 newLocation = getField().freeAdjacentLocation(getLocation());
@@ -143,24 +146,38 @@ public class Fox extends Consumer
     }
     
     /**
-     * Check whether or not this fox is to give birth at this step.
+     * Check whether or not this rabbit is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param newFoxes A list to return newly born foxes.
+     * @param newFoxes A list to return newly born rabbits.
      */
+     
     private void giveBirth(List<Entity> newFoxes)
     {
-        // New foxes are born into adjacent locations.
+        // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Location> adjacentLocations = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacentLocations.iterator();
         int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            boolean gender = rand.nextBoolean();
-            Fox young = new Fox(false,gender,field, loc);
-            newFoxes.add(young);
+        while(it.hasNext()){
+            Location location = it.next();
+            Object entity = field.getObjectAt(location);
+            if(entity instanceof Fox){
+                Fox fox = (Fox) entity;
+                if(!fox.isFemale()){
+                    for(int b = 0; b < births && free.size() > 0; b++) {
+                        Location loc = free.remove(0);
+                        boolean gender = rand.nextBoolean();
+                        Fox young = new Fox(false,gender, field, loc);
+                        newFoxes.add(young);
+                    }
+                    return;
+                }
+            }
         }
     }
+    
         
     /**
      * Generate a number representing the number of births,

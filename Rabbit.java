@@ -16,14 +16,14 @@ public class Rabbit extends Consumer
     // The age at which a rabbit can start to breed.
     private static final int BREEDING_AGE = 5;
     // The age to which a rabbit can live.
-    private static final int MAX_AGE = 40;
+    private static final int MAX_AGE = 30;
     // The likelihood of a rabbit breeding.
-    private static final double BREEDING_PROBABILITY = 0.12;
+    private static final double BREEDING_PROBABILITY = 0.16;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
+    private static final int MAX_LITTER_SIZE = 3;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    private static final int CARROT_FOOD_VALUE = 2;
+    private static final int GRASS_FOOD_VALUE = 30;
     // Individual characteristics (instance fields).
     
     // The rabbit's age.
@@ -42,7 +42,7 @@ public class Rabbit extends Consumer
     {
         super(female, field, location);
         age = 0;
-        this.foodLevel = CARROT_FOOD_VALUE;
+        this.foodLevel = GRASS_FOOD_VALUE;
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
         }
@@ -56,14 +56,25 @@ public class Rabbit extends Consumer
     public void act(List<Entity> newRabbits)
     {
         incrementAge();
-        if(super.isAlive()) {
-            giveBirth(newRabbits);            
-            // Try to move into a free location.
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
-            if(newLocation != null && getField().isDay()) {
+        incrementHunger();
+        if(isAlive()) {
+            //if it is female, giveBirth
+            if(isFemale()){
+                giveBirth(newRabbits);
+            }     
+            // Move towards a source of food if found.
+            Location newLocation = findFood();
+            
+            if(newLocation == null) { 
+                // No food found - try to move to a free location.
+                newLocation = getField().freeAdjacentLocation(getLocation());
+            }
+            //see if there is a possible move
+            if(newLocation != null) {
                 setLocation(newLocation);
-            }else if (newLocation == null && getField().isDay()){
-                // Overcrowding.
+            }
+            else {
+                //overcrowding
                 setDead();
             }
         }
@@ -78,6 +89,19 @@ public class Rabbit extends Consumer
         age++;
         if(age > MAX_AGE) {
             setDead();
+            System.out.println("age");
+        }
+    }
+    
+    /**
+     * Make this fox more hungry. This could result in the rabbit's death.
+     */
+    private void incrementHunger()
+    {
+        foodLevel--;
+        if(foodLevel <= 0) {
+            setDead();
+            System.out.println("hunger");
         }
     }
     
@@ -92,12 +116,25 @@ public class Rabbit extends Consumer
         // Get a list of adjacent free locations.
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Location> adjacentLocations = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacentLocations.iterator();
         int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            boolean gender = rand.nextBoolean();
-            Rabbit young = new Rabbit(false,gender, field, loc);
-            newRabbits.add(young);
+        while(it.hasNext()){
+            Location location = it.next();
+            Object entity = field.getObjectAt(location);
+            if(entity instanceof Rabbit){
+                Rabbit rabbit = (Rabbit) entity;
+                if(!rabbit.isFemale()){
+                    for(int b = 0; b < births && free.size() > 0; b++) {
+                        Location loc = free.remove(0);
+                        boolean gender = rand.nextBoolean();
+                        Rabbit young = new Rabbit(false, gender, field, loc);
+                        newRabbits.add(young);
+                        System.out.println("bred");
+                    }
+                    return;
+                }
+            }
         }
     }
         
@@ -135,7 +172,7 @@ public class Rabbit extends Consumer
                 Grass grass = (Grass) plant;
                 if(grass.isAlive()) { 
                     grass.setDead();
-                    foodLevel = CARROT_FOOD_VALUE;
+                    foodLevel = GRASS_FOOD_VALUE;
                     return where;
                 }
             }

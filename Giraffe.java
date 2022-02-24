@@ -14,16 +14,16 @@ public class Giraffe extends Consumer
     // Characteristics shared by all giraffes (class variables).
     
     // The age at which a Giraffe can start to breed.
-    private static final int BREEDING_AGE = 15;
+    private static final int BREEDING_AGE = 7;
     // The age to which a Giraffe can live.
-    private static final int MAX_AGE = 150;
+    private static final int MAX_AGE = 70;
     // The likelihood of a Giraffe breeding.
-    private static final double BREEDING_PROBABILITY = 0.08;
+    private static final double BREEDING_PROBABILITY = 0.14;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
+    private static final int MAX_LITTER_SIZE = 3;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a Giraffe can go before it has to eat again.
-    private static final int LEAVES_FOOD_VALUE = 5;
+    private static final int LEAVES_FOOD_VALUE = 30;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -66,9 +66,12 @@ public class Giraffe extends Consumer
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newgiraffes);            
+            if(super.isFemale()){
+                giveBirth(newgiraffes);
+            }            
             // Move towards a source of food if found.
             Location newLocation = findFood();
+            
             if(newLocation == null) { 
                 // No food found - try to move to a free location.
                 newLocation = getField().freeAdjacentLocation(getLocation());
@@ -119,10 +122,10 @@ public class Giraffe extends Consumer
         while(it.hasNext()) {
             Location where = it.next();
             Object plant = field.getObjectAt(where);
-            if(plant instanceof Grass) {
-                Grass grass = (Grass) plant;
-                if(grass.isAlive()) { 
-                    grass.setDead();
+            if(plant instanceof Acacia) {
+                Acacia acacia = (Acacia) plant;
+                if(acacia.isAlive()) { 
+                    acacia.setDead();
                     foodLevel = LEAVES_FOOD_VALUE;
                     return where;
                 }
@@ -132,22 +135,34 @@ public class Giraffe extends Consumer
     }
     
     /**
-     * Check whether or not this Giraffe is to give birth at this step.
+     * Check whether or not this rabbit is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param newgiraffes A list to return newly born giraffes.
+     * @param newGiraffes A list to return newly born rabbits.
      */
-    private void giveBirth(List<Entity> newgiraffes)
+    private void giveBirth(List<Entity> newGiraffe)
     {
-        // New giraffes are born into adjacent locations.
+        // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Location> adjacentLocations = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacentLocations.iterator();
         int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            boolean gender = rand.nextBoolean();
-            Giraffe young = new Giraffe(false,gender,field, loc);
-            newgiraffes.add(young);
+        while(it.hasNext()){
+            Location location = it.next();
+            Object entity = field.getObjectAt(location);
+            if(entity instanceof Giraffe){
+                Giraffe giraffe = (Giraffe) entity;
+                if(!giraffe.isFemale()){
+                    for(int b = 0; b < births && free.size() > 0; b++) {
+                        Location loc = free.remove(0);
+                        boolean gender = rand.nextBoolean();
+                        Giraffe young = new Giraffe(false, gender, field, loc);
+                        newGiraffe.add(young);
+                    }
+                    return;
+                }
+            }
         }
     }
         

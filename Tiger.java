@@ -14,22 +14,22 @@ public class Tiger extends ApexPredator
     // Characteristics shared by all Tigers (class variables).
     
     // The age at which a Tiger can start to breed.
-    private static final int BREEDING_AGE = 15;
+    private static final int BREEDING_AGE = 30;
     // The age to which a Tiger can live.
     private static final int MAX_AGE = 100;
     // The likelihood of a Tiger breeding.
-    private static final double BREEDING_PROBABILITY = 0.06;
+    private static final double BREEDING_PROBABILITY = 0.13;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 5;
+    private static final int MAX_LITTER_SIZE = 1;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a Tiger can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 4;
+    private static final int RABBIT_FOOD_VALUE = 80;
     // number of steps a Tiger can go before it has to eat again.
-    private static final int MOUSE_FOOD_VALUE = 1;
+    private static final int MOUSE_FOOD_VALUE = 60;
     // number of steps a Tiger can go before it has to eat again.
-    private static final int FOX_FOOD_VALUE = 6;
+    private static final int FOX_FOOD_VALUE = 80;
     // number of steps a Tiger can go before it has to eat again.
-    private static final int GIRAFFE_FOOD_VALUE = 15;
+    private static final int GIRAFFE_FOOD_VALUE = 100;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -72,7 +72,9 @@ public class Tiger extends ApexPredator
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newTigers);            
+            if(super.isFemale()){
+                giveBirth(newTigers);
+            }     
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -80,10 +82,10 @@ public class Tiger extends ApexPredator
                 newLocation = getField().freeAdjacentLocation(getLocation());
             }
             // See if it was possible to move.
-            if(newLocation != null) {
+            if(newLocation != null && !getField().isDay()) {
                 setLocation(newLocation);
             }
-            else {
+            else if(newLocation == null && !getField().isDay()){
                 // Overcrowding.
                 setDead();
             }
@@ -125,23 +127,8 @@ public class Tiger extends ApexPredator
         while(it.hasNext()) {
             Location where = it.next();
             Object animal = field.getObjectAt(where);
-            if(animal instanceof Rabbit) {
-                Rabbit rabbit = (Rabbit) animal;
-                if(rabbit.isAlive()) { 
-                    rabbit.setDead();
-                    foodLevel = RABBIT_FOOD_VALUE;
-                    return where;
-                }
-            }
-            else if(animal instanceof Mouse) {
-                Mouse mouse = (Mouse) animal;
-                if(mouse.isAlive()) { 
-                    mouse.setDead();
-                    foodLevel = MOUSE_FOOD_VALUE;
-                    return where;
-                }
-            }
-            else if(animal instanceof Fox) {
+            
+            if(animal instanceof Fox) {
                 Fox fox = (Fox) animal;
                 if(fox.isAlive()) { 
                     fox.setDead();
@@ -162,22 +149,34 @@ public class Tiger extends ApexPredator
     }
     
     /**
-     * Check whether or not this Tiger is to give birth at this step.
+     * Check whether or not this rabbit is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param newTigers A list to return newly born Tigers.
+     * @param newTigers A list to return newly born rabbits.
      */
     private void giveBirth(List<Entity> newTigers)
     {
-        // New Tigers are born into adjacent locations.
+        // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List<Location> adjacentLocations = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacentLocations.iterator();
         int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            boolean gender = rand.nextBoolean();
-            Tiger young = new Tiger(false,gender,field, loc);
-            newTigers.add(young);
+        while(it.hasNext()){
+            Location location = it.next();
+            Object entity = field.getObjectAt(location);
+            if(entity instanceof Tiger){
+                Tiger tiger = (Tiger) entity;
+                if(!tiger.isFemale()){
+                    for(int b = 0; b < births && free.size() > 0; b++) {
+                        Location loc = free.remove(0);
+                        boolean gender = rand.nextBoolean();
+                        Tiger young = new Tiger(false, gender, field, loc);
+                        newTigers.add(young);
+                    }
+                    return;
+                }
+            }
         }
     }
         
