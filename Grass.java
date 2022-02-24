@@ -41,8 +41,13 @@ public class Grass extends Plant
     }
     private int breed(){
         int total = 0;
+        double growthBonusProbability = GRASS_GROWTH_PROBABILITY;
+        if(getField().getWeatherCondition().equals("raining")){
+            growthBonusProbability += 0.01;
+        }
+    
         for (int i = 0; i < GROWTH_RATE;i++){
-            if (rand.nextDouble() <= GRASS_GROWTH_PROBABILITY){
+            if (rand.nextDouble() <= growthBonusProbability){
                 total++;
             }
         }
