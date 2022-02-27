@@ -124,7 +124,7 @@ public class Fox extends Consumer
     protected Location findFood()
     {
         Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation(), 2);
+        List<Location> adjacent = field.adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
         while(it.hasNext()) {
             Location where = it.next();
