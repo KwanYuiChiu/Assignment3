@@ -2,21 +2,22 @@ import java.util.List;
 
 /**
  * Write a description of class Entity here.
+ * An entity is any living organism in the Simulation
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Reibjok Othow and Kwan Yui Chiu
+ * @version 27/02/2022
  */
 public abstract class Entity
 {
-    // Whether the animal is alive or not.
+    // Whether the entity is alive or not.
     private boolean alive;
-    // The animal's field.
+    // The entity's field.
     private Field field;
-    // The animal's position in the field.
+    // The entity's position in the field.
     private Location location;
     
     /**
-     * Create a new animal at location in field.
+     * Create a new entity at location in field.
      * 
      * @param field The field currently occupied.
      * @param location The location within the field.
@@ -29,8 +30,8 @@ public abstract class Entity
     }
 
     /**
-     * Return the animal's location.
-     * @return The animal's location.
+     * Return the entity's location.
+     * @return The entity's location.
      */
     protected Location getLocation()
     {
@@ -38,8 +39,8 @@ public abstract class Entity
     }
     
     /**
-     * Place the animal at the new location in the given field.
-     * @param newLocation The animal's new location.
+     * Place the entity at the new location in the given field.
+     * @param newLocation The entity's new location.
      */
     protected void setLocation(Location newLocation)
     {
@@ -53,8 +54,8 @@ public abstract class Entity
     
 
     /**
-     * Check whether the animal is alive or not.
-     * @return true if the animal is still alive.
+     * Check whether the entity is alive or not.
+     * @return true if the entity is still alive.
      */
     protected boolean isAlive()
     {
@@ -62,7 +63,7 @@ public abstract class Entity
     }
 
     /**
-     * Indicate that the animal is no longer alive.
+     * Indicate that the entity is no longer alive.
      * It is removed from the field.
      */
     protected void setDead()
@@ -76,8 +77,8 @@ public abstract class Entity
     }
     
         /**
-     * Return the animal's field.
-     * @return The animal's field.
+     * Return the entity's field.
+     * @return The entity's field.
      */
     protected Field getField()
     {
@@ -85,9 +86,9 @@ public abstract class Entity
     }
     
     /**
-     * Make this animal act - that is: make it do
+     * Make this entity act - that is: make it do
      * whatever it wants/needs to do.
-     * @param newAnimals A list to receive newly born animals.
+     * @param newentitys A list to receive newly born entitys.
      */
     abstract public void act(List<Entity> newEntities);
 }

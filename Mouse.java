@@ -3,7 +3,7 @@ import java.util.Random;
 import java.util.Iterator;
 
 /**
- * A simple model of a rabbit.
+ * A simple model of a mouse.
  * Mice age, move, breed, and die.
  * 
  * @author David J. Barnes and Michael Kölling
@@ -11,13 +11,13 @@ import java.util.Iterator;
  */
 public class Mouse extends Consumer
 {
-    // Characteristics shared by all rabbits (class variables).
+    // Characteristics shared by all mice (class variables).
 
-    // The age at which a rabbit can start to breed.
+    // The age at which a mouse can start to breed.
     private static final int BREEDING_AGE = 5;
-    // The age to which a rabbit can live.
+    // The age to which a mouse can live.
     private static final int MAX_AGE = 50;
-    // The likelihood of a rabbit breeding.
+    // The likelihood of a mouse breeding.
     private static final double BREEDING_PROBABILITY = 0.16;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 3;
@@ -26,15 +26,16 @@ public class Mouse extends Consumer
     private static final int GRASS_FOOD_VALUE = 50;
     // Individual characteristics (instance fields).
     
-    // The rabbit's age.
+    // The mouse's age.
     private int age;
     private int foodLevel;
     
     /**
-     * Create a new rabbit. A rabbit may be created with age
+     * Create a new mouse. A mouse may be created with age
      * zero (a new born) or with a random age.
      * 
-     * @param randomAge If true, the rabbit will have a random age.
+     * @param randomAge If true, the mouse will have a random age.
+     * @param female whether or not the mouse is female
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
@@ -49,9 +50,9 @@ public class Mouse extends Consumer
     }
     
     /**
-     * This is what the rabbit does most of the time - it runs 
-     * around. Sometimes it will breed or die of old age.
-     * @param newMice A list to return newly born rabbits.
+     * This is what the mouse does most of the time - it runs 
+     * around and eats grass. Sometimes it will breed or die of old age.
+     * @param newMice A list to return newly born mice.
      */
     public void act(List<Entity> newMice)
     {
@@ -79,7 +80,7 @@ public class Mouse extends Consumer
 
     /**
      * Increase the age.
-     * This could result in the rabbit's death.
+     * This could result in the mouse's death.
      */
     private void incrementAge()
     {
@@ -90,13 +91,14 @@ public class Mouse extends Consumer
     }
     
     /**
-     * Check whether or not this rabbit is to give birth at this step.
+     * Check whether or not this mouse is to give birth at this step.
+     * They breed when a male and female mouse meet and mate
      * New births will be made into free adjacent locations.
-     * @param newMice A list to return newly born rabbits.
+     * @param newMice A list to return newly born mice.
      */
     private void giveBirth(List<Entity> newMice)
     {
-        // New rabbits are born into adjacent locations.
+        // New mice are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation(), 2);
@@ -110,7 +112,7 @@ public class Mouse extends Consumer
     }
         
     /**
-     * This method checks if there is any male mouse nearby so 
+     * This method checks if there is any male mouse nearby 
      * @return boolean there is a male nearby
      */
     private boolean canFindMaleMouse(int distance){
@@ -150,14 +152,19 @@ public class Mouse extends Consumer
     }
 
     /**
-     * A rabbit can breed if it has reached the breeding age.
-     * @return true if the rabbit can breed, false otherwise.
+     * A mouse can breed if it has reached the breeding age.
+     * @return true if the mouse can breed, false otherwise.
      */
     private boolean canBreed()
     {
         return age >= BREEDING_AGE;
     }
     
+    /**
+     * Look for grass adjacent to the current location.
+     * Only the first live grass is eaten.
+     * @return Where food was found, or null if it wasn't.
+     */
     protected Location findFood(){
         Field field = getField();
         List<Location> adjacent = field.adjacentLocations(getLocation());

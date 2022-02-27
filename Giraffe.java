@@ -4,10 +4,10 @@ import java.util.Random;
 
 /**
  * A simple model of a Giraffe.
- * giraffes age, move, eat rabbits, and die.
+ * giraffes age, move, eat acacia, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author David J. Barnes and Michael Kölling and Reibjok Othow
+ * @version 27/02/2022
  */
 public class Giraffe extends Consumer
 {
@@ -21,7 +21,7 @@ public class Giraffe extends Consumer
     private static final double BREEDING_PROBABILITY = 0.09;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 2;
-    // The food value of a single rabbit. In effect, this is the
+    // The food value of a single acacia. In effect, this is the
     // number of steps a Giraffe can go before it has to eat again.
     private static final int ACACIA_FOOD_VALUE = 50;
     // A shared random number generator to control breeding.
@@ -38,6 +38,7 @@ public class Giraffe extends Consumer
      * and not hungry) or with a random age and food level.
      * 
      * @param randomAge If true, the Giraffe will have random age and hunger level.
+     * @param female whether or not the giraffe is female
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
@@ -56,8 +57,9 @@ public class Giraffe extends Consumer
     
     /**
      * This is what the Giraffe does most of the time: it hunts for
-     * rabbits. In the process, it might breed, die of hunger,
+     * acacia. In the process, it might breed, die of hunger,
      * or die of old age.
+     * only female giraffes can breed
      * @param field The field currently occupied.
      * @param newgiraffes A list to return newly born giraffes.
      */
@@ -109,8 +111,8 @@ public class Giraffe extends Consumer
     }
     
     /**
-     * Look for rabbits adjacent to the current location.
-     * Only the first live rabbit is eaten.
+     * Look for acacia adjacent to the current location.
+     * Only the first live acacia is eaten.
      * @return Where food was found, or null if it wasn't.
      */
     protected Location findFood()
@@ -135,6 +137,7 @@ public class Giraffe extends Consumer
     
     /**
      * Check whether or not this Giraffe is to give birth at this step.
+     * The giraffe breed when a male and female giraffe meet and mate
      * New births will be made into free adjacent locations.
      * @param newgiraffes A list to return newly born giraffes.
      */
@@ -154,7 +157,7 @@ public class Giraffe extends Consumer
     }
         
     /**
-     * This method checks if there is any male mouse nearby so 
+     * This method checks if there is any male giraffe nearby so 
      * @return boolean there is a male nearby
      */
     private boolean canFindMaleGiraffe(int distance){

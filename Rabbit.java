@@ -4,10 +4,10 @@ import java.util.Iterator;
 
 /**
  * A simple model of a rabbit.
- * Rabbits age, move, breed, and die.
+ * Rabbits age, move, eat grass, breed, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author David J. Barnes and Michael Kölling and Reibjok Othow and Kwan Yui Chiu
+ * @version 27/02/2022
  */
 public class Rabbit extends Consumer
 {
@@ -23,7 +23,7 @@ public class Rabbit extends Consumer
     private static final int MAX_LITTER_SIZE = 3;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    private static final int CARROT_FOOD_VALUE = 50;
+    private static final int GRASS_FOOD_VALUE = 50;
     // Individual characteristics (instance fields).
     
     // The rabbit's age.
@@ -35,6 +35,7 @@ public class Rabbit extends Consumer
      * zero (a new born) or with a random age.
      * 
      * @param randomAge If true, the rabbit will have a random age.
+     * @param female whether  or not the rabbit is female
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
@@ -42,14 +43,14 @@ public class Rabbit extends Consumer
     {
         super(female, field, location);
         age = 0;
-        this.foodLevel = CARROT_FOOD_VALUE;
+        this.foodLevel = GRASS_FOOD_VALUE;
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
         }
     }
     
     /**
-     * This is what the rabbit does most of the time - it runs 
+     * This is what the rabbit does most of the time - it runs and eats grass
      * around. Sometimes it will breed or die of old age.
      * @param newRabbits A list to return newly born rabbits.
      */
@@ -91,6 +92,7 @@ public class Rabbit extends Consumer
     
     /**
      * Check whether or not this rabbit is to give birth at this step.
+     * The rabbits breed when a male and female rabbit meet and mate
      * New births will be made into free adjacent locations.
      * @param newRabbits A list to return newly born rabbits.
      */
@@ -110,7 +112,7 @@ public class Rabbit extends Consumer
     }
     
     /**
-     * This method checks if there is any male rabbits nearby so 
+     * This method checks if there is any male rabbits nearby 
      * @return boolean there is a male nearby
      */
     private boolean canFindMaleRabbit(int distance){
@@ -158,6 +160,11 @@ public class Rabbit extends Consumer
         return age >= BREEDING_AGE;
     }
     
+    /**
+     * Look for grass adjacent to the current location.
+     * Only the first live grass is eaten.
+     * @return Where food was found, or null if it wasn't.
+     */
     protected Location findFood(){
         Field field = getField();
         List<Location> adjacent = field.adjacentLocations(getLocation());
@@ -169,7 +176,7 @@ public class Rabbit extends Consumer
                 Grass grass = (Grass) plant;
                 if(grass.isAlive()) { 
                     grass.setDead();
-                    foodLevel = CARROT_FOOD_VALUE;
+                    foodLevel = GRASS_FOOD_VALUE;
                     return where;
                 }
             }

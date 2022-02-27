@@ -4,10 +4,10 @@ import java.util.Random;
 
 /**
  * A simple model of a Tiger.
- * Tigers age, move, eat rabbits, and die.
+ * Tigers age, move, eat consumers, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author Reibjok Othow and Kwan Yui Chiu
+ * @version 27/02/2022)
  */
 public class Tiger extends ApexPredator
 {
@@ -44,6 +44,7 @@ public class Tiger extends ApexPredator
      * and not hungry) or with a random age and food level.
      * 
      * @param randomAge If true, the Tiger will have random age and hunger level.
+     * @param female whether or not the tiger is female
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
@@ -62,8 +63,10 @@ public class Tiger extends ApexPredator
     
     /**
      * This is what the Tiger does most of the time: it hunts for
-     * rabbits. In the process, it might breed, die of hunger,
+     * consumers. In the process, it might breed, die of hunger,
      * or die of old age.
+     * The tigers only hunt for food in the night
+     * Only female tiger are able to breed
      * @param field The field currently occupied.
      * @param newTigers A list to return newly born Tigers.
      */
@@ -119,8 +122,8 @@ public class Tiger extends ApexPredator
     }
     
     /**
-     * Look for rabbits adjacent to the current location.
-     * Only the first live rabbit is eaten.
+     * Look for consumers adjacent to the current location.
+     * Only the first live consumer is eaten.
      * @return Where food was found, or null if it wasn't.
      */
     protected Location findFood()
@@ -169,6 +172,7 @@ public class Tiger extends ApexPredator
     
     /**
      * Check whether or not this Tiger is to give birth at this step.
+     * Tigers give birth when a male and female tiger meet and mate
      * New births will be made into free adjacent locations.
      * @param newTigers A list to return newly born Tigers.
      */

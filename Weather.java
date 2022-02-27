@@ -4,7 +4,7 @@ import java.util.Random;
  * This class controls the weather in the field. Weather can only be set
  * to one of three state; raining, foggy or sunny.
  *
- * @author Kwan Yui Chiu
+ * @author Kwan Yui Chiu and Reibjok Othow
  * @version 19-2-2022
  */
 public class Weather
@@ -24,6 +24,10 @@ public class Weather
         randomiseWeather();
     }
     
+    /**
+     * this method randomises the weather 
+     * there are three possible weather conditions; rainy, foggy and sunny
+     */
     private void randomiseWeather(){
         isRaining = isFoggy = isSunny = false;
         int weather = rand.nextInt(4);
@@ -42,6 +46,9 @@ public class Weather
         currentWeatherStep = rand.nextInt(MAX_WEATHER_LENGTH) + 1;
     }
     
+    /**
+     * this method updates the weather condition 
+     */
     public void update(){
         currentWeatherStep--;
         if (currentWeatherStep == 0){
@@ -49,6 +56,10 @@ public class Weather
         }
     }
     
+    /**
+     * This method returns a description of the weather
+     * @return String the weather description
+     */
     public String getDescription(){
         if (isRaining){
             return "raining";

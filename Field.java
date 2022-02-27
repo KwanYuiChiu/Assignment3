@@ -8,8 +8,8 @@ import java.util.Random;
  * Represent a rectangular grid of field positions.
  * Each position is able to store a single animal.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29
+ * @author David J. Barnes and Michael Köllinga and Reibjok Othow and Kwan Yui Chiu
+ * @version 27/02/2022
  */
 public class Field
 {
@@ -20,7 +20,9 @@ public class Field
     private int depth, width;
     // Storage for the animals.
     private Object[][] field;
+    //The weather condition within the simulation
     private Weather weather;
+    //the number of steps that the simulation has run
     private int step;
     /**
      * Represent a field of the given dimensions.
@@ -36,6 +38,9 @@ public class Field
         field = new Object[depth][width];
     }
     
+    /**
+     * Increase the numner of steps and update the weather
+     */
     public void increaseStep(){
         step++;
         this.weather.update();
@@ -218,6 +223,15 @@ public class Field
         return locations;
     }
     
+    /**
+     * This method overrides the adjacentLocation method and returns adjacent locations within a specified distance
+     * Return a shuffled list of locations adjacent to the given one within a specified distance
+     * The list will not include the location itself.
+     * All locations will lie within the grid.
+     * @param location The location from which to generate adjacencies.
+     * @param distance the distance from the furthest location that should be returned 
+     * @return A list of locations adjacent to that given.
+     */
     public List<Location> adjacentLocations(Location location, int Distance)
     {
         assert location != null : "Null location passed to adjacentLocations";
@@ -266,7 +280,8 @@ public class Field
     }
     
     /**
-     * 
+     * This method returns the weather in the simulation
+     * @return the weather in the simulation
      */
     public String getWeatherCondition(){
         return this.weather.getDescription();

@@ -4,10 +4,10 @@ import java.util.Random;
 
 /**
  * A simple model of a fox.
- * Foxes age, move, eat rabbits, and die.
+ * Foxes age, move, eat rabbits or mice or snakes, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author David J. Barnes and Michael Kölling and Reibjok Othow and Kwan Yui Chiu
+ * @version 27/02/2022
  */
 public class Fox extends Consumer
 {
@@ -42,6 +42,7 @@ public class Fox extends Consumer
      * and not hungry) or with a random age and food level.
      * 
      * @param randomAge If true, the fox will have random age and hunger level.
+     * @param female whether or not the fox is female
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
@@ -60,7 +61,7 @@ public class Fox extends Consumer
     
     /**
      * This is what the fox does most of the time: it hunts for
-     * rabbits. In the process, it might breed, die of hunger,
+     * rabbits, mice or snakes. In the process, it might breed, die of hunger,
      * or die of old age.
      * @param field The field currently occupied.
      * @param newFoxes A list to return newly born foxes.
@@ -116,8 +117,8 @@ public class Fox extends Consumer
     }
     
     /**
-     * Look for rabbits adjacent to the current location.
-     * Only the first live rabbit is eaten.
+     * Look for rabbits, mice or snakes adjacent to the current location.
+     * Only the first live animal is eaten.
      * @return Where food was found, or null if it wasn't.
      */
     protected Location findFood()
@@ -178,7 +179,7 @@ public class Fox extends Consumer
     }
         
     /**
-     * This method checks if there is any male mouse nearby so 
+     * This method checks if there is any male foxes nearby 
      * @return boolean there is a male nearby
      */
     private boolean canFindMaleFox(int distance){

@@ -3,8 +3,8 @@ import java.util.List;
 /**
  * A class representing shared characteristics of animals.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author David J. Barnes and Michael Kölling and Reibjok Othow and Kwan Yui Chiu
+ * @version 27/02/2022
  */
 public abstract class Animal extends Entity
 {
