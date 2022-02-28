@@ -14,7 +14,7 @@ import java.util.Map;
  * @author David J. Barnes and Michael Kölling and Reibjok Othow and Kwan Yui Chui
  * @version 27/02/2022
  */
-public class SimulatorView extends JFrame
+public class SimulatorView extends JFrame implements View
 {
     // Colors used for empty locations.
     private static final Color EMPTY_COLOR = Color.white;

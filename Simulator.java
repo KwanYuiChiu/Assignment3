@@ -43,6 +43,8 @@ public class Simulator
     private int step;
     // A graphical view of the simulation.
     private SimulatorView view;
+    //A graphical view of the graph
+    private GraphView graphView;
     
     /**
      * Construct a simulation field with default size.
@@ -79,6 +81,18 @@ public class Simulator
         view.setColor(Snake.class, Color.RED);
         view.setColor(Tiger.class, Color.BLACK);
         view.setColor(Acacia.class, new Color(0,102,0));
+        
+        // Create the graph view with the state of each location
+        graphView = new GraphView(500, 150, 500);
+        graphView.setColor(Rabbit.class, Color.ORANGE);
+        graphView.setColor(Fox.class, Color.BLUE);
+        graphView.setColor(Giraffe.class, Color.MAGENTA);
+        graphView.setColor(Grass.class, Color.GREEN);
+        graphView.setColor(Mouse.class, new Color(165, 42, 42));
+        graphView.setColor(Snake.class, Color.RED);
+        graphView.setColor(Tiger.class, Color.BLACK);
+        graphView.setColor(Acacia.class, new Color(0,102,0));
+        
         // Setup a valid starting point.
         reset();
     }
@@ -131,6 +145,7 @@ public class Simulator
         entities.addAll(newEntities);
 
         view.showStatus(step, field);
+        graphView.showStatus(step, field);
     }
         
     /**
@@ -144,6 +159,7 @@ public class Simulator
         
         // Show the starting state in the view.
         view.showStatus(step, field);
+        graphView.reset();
     }
     
     /**
