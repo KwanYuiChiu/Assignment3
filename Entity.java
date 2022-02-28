@@ -50,8 +50,6 @@ public abstract class Entity
         location = newLocation;
         field.place(this, newLocation);
     }
-    
-    
 
     /**
      * Check whether the entity is alive or not.
@@ -76,7 +74,7 @@ public abstract class Entity
         }
     }
     
-        /**
+    /**
      * Return the entity's field.
      * @return The entity's field.
      */
