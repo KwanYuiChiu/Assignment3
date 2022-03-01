@@ -92,6 +92,10 @@ public class SimulatorView extends JFrame implements View
         simulateLongRun = new JButton("Simulate Long Run");
         simulateLongRun.addActionListener(new ActionListener(){
                             public void actionPerformed(ActionEvent e) {
+                                if (threadStarted){
+                                    longSimThread.stop();
+                                    simulator.reset();
+                                }
                                 longSimThread = new Thread(simulator::runLongSimulation);
                                 longSimThread.start();
                                 threadStarted =  true;
