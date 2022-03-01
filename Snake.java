@@ -9,7 +9,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kölling and Reibjok Othow and Kwan Yui Chiu
  * @version 27/02/2022
  */
-public class Snake extends Consumer
+public class Snake extends ApexPredator
 {
     // Characteristics shared by all snakes (class variables).
     
