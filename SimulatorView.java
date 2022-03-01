@@ -57,6 +57,7 @@ public class SimulatorView extends JFrame implements View
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
+        
         setLocation(100, 50);
         /*
          * Initialisation for the GUI componenets for the sidebar
