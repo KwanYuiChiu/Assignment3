@@ -103,7 +103,6 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        System.out.println("button reached");
         simulate(4000);
     }
     
