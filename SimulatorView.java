@@ -59,6 +59,7 @@ public class SimulatorView extends JFrame implements View
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
         setLocation(100, 50);
+        
         /*
          * Initialisation for the GUI componenets for the sidebar
          */
@@ -88,7 +89,6 @@ public class SimulatorView extends JFrame implements View
                                    simulator.reset(); 
                                 }
                            });
-                           
         simulateLongRun = new JButton("Simulate Long Run");
         simulateLongRun.addActionListener(new ActionListener(){
                             public void actionPerformed(ActionEvent e) {
@@ -98,7 +98,6 @@ public class SimulatorView extends JFrame implements View
                             }
         });
         
-        setLocation(100, 50);
         
         fieldView = new FieldView(height, width);
 
