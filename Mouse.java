@@ -6,8 +6,8 @@ import java.util.Iterator;
  * A simple model of a mouse.
  * Mice age, move, breed, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author Kwan Yui Chiu and Reibjok Othow
+ * @version 27-02-2022
  */
 public class Mouse extends Consumer
 {
@@ -28,6 +28,7 @@ public class Mouse extends Consumer
     
     // The mouse's age.
     private int age;
+    // The mouse's current hungerness
     private int foodLevel;
     
     /**
@@ -113,7 +114,7 @@ public class Mouse extends Consumer
         
     /**
      * This method checks if there is any male mouse nearby 
-     * @return boolean there is a male nearby
+     * @return whether there is a male nearby
      */
     private boolean canFindMaleMouse(int distance){
         Field field = getField();
@@ -135,7 +136,7 @@ public class Mouse extends Consumer
     /**
      * Generate a number representing the number of births,
      * if it can breed.
-     * @return The number of births (may be zero).
+     * @return The number of births (may be zero) it may give.
      */
     private int breed()
     {

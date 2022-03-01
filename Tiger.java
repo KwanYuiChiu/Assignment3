@@ -7,7 +7,7 @@ import java.util.Random;
  * Tigers age, move, eat consumers, and die.
  * 
  * @author Reibjok Othow and Kwan Yui Chiu
- * @version 27/02/2022)
+ * @version 27/02/2022
  */
 public class Tiger extends ApexPredator
 {
@@ -67,7 +67,6 @@ public class Tiger extends ApexPredator
      * or die of old age.
      * The tigers only hunt for food in the night
      * Only female tiger are able to breed
-     * @param field The field currently occupied.
      * @param newTigers A list to return newly born Tigers.
      */
     public void act(List<Entity> newTigers)

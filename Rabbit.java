@@ -28,6 +28,7 @@ public class Rabbit extends Consumer
     
     // The rabbit's age.
     private int age;
+    // The rabbit's hungerness.
     private int foodLevel;
     
     /**
@@ -113,7 +114,7 @@ public class Rabbit extends Consumer
     
     /**
      * This method checks if there is any male rabbits nearby 
-     * @return boolean there is a male nearby
+     * @return whether there is a male nearby
      */
     private boolean canFindMaleRabbit(int distance){
         Field field = getField();

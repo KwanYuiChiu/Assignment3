@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 Project: predator-prey simulation-v2
 Authors: Michael Kölling and David J. Barnes and Reibjok Othow and Kwan Yui Chiu
+=======
+Project: predator and prey simulation
+Authors: Reibjok Othow and Kwan Yui Chiu
+>>>>>>> 20fb6cf9bff2be67401efaf358160abab0bda654
 
 This project is part of the material for chapter 10 of the book
 
@@ -8,7 +13,11 @@ This project is part of the material for chapter 10 of the book
    David J. Barnes and Michael Kölling
    Pearson Education, 2016
 
+<<<<<<< HEAD
 A predator-prey simulation involving predators and prey in
+=======
+A predator-prey simulation involving animals and plants in
+>>>>>>> 20fb6cf9bff2be67401efaf358160abab0bda654
 an enclosed rectangular field.
 
 This is the first version of the simulation. This version

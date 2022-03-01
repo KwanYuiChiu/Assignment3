@@ -29,6 +29,7 @@ public class Weather
      * there are three possible weather conditions; rainy, foggy and sunny
      */
     private void randomiseWeather(){
+        // Reset the weather
         isRaining = isFoggy = isSunny = false;
         int weather = rand.nextInt(4);
         switch(weather){

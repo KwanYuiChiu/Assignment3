@@ -75,7 +75,7 @@ public class Acacia extends Plant
      * This method is called twhen the acacia should grow
      * @param a list of newPlants
      */
-    protected void grow(List<Entity> newPlants){
+    protected void grow(List<Entity> newAcacia){
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
@@ -83,9 +83,8 @@ public class Acacia extends Plant
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            boolean gender = rand.nextBoolean();
             Plant young = new Acacia(field, loc);
-            newPlants.add(young);
+            newAcacia.add(young);
         }
     }
 }
