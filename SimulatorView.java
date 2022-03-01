@@ -25,19 +25,24 @@ public class SimulatorView extends JFrame implements View
     private final String STEP_PREFIX = "Step: ";
     private final String POPULATION_PREFIX = "Population: ";
     private JLabel stepLabel, population, infoLabel;
+    
+    private final String WEATHER_PREFIX = "Weather: ";
+    private final String TIME_PREFIX = "Time: ";
+    private JLabel weatherLabel,timeLabel;
+    private JButton simulateOneStepBtn,resetBtn;
     private FieldView fieldView;
     
     // A map for storing colors for participants in the simulation
     private Map<Class, Color> colors;
     // A statistics object computing and storing simulation information
     private FieldStats stats;
-
+    private Simulator simulator;
     /**
      * Create a view of the given width and height.
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width)
+    public SimulatorView(int height, int width, Simulator simulator)
     {
         stats = new FieldStats();
         colors = new LinkedHashMap<>();
@@ -47,6 +52,17 @@ public class SimulatorView extends JFrame implements View
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
+        weatherLabel = new JLabel(WEATHER_PREFIX + produce20CharacterPadding(""), JLabel.CENTER);
+        timeLabel = new JLabel(TIME_PREFIX + produce20CharacterPadding(""), JLabel.CENTER);
+        simulateOneStepBtn = new JButton("Simulate one step");
+        simulateOneStepBtn.addActionListener(new ActionListener() {
+                               public void actionPerformed(ActionEvent e) {simulator.simulateOneStep(); }
+                           });
+        
+        resetBtn = new JButton("Reset");
+        resetBtn.addActionListener(new ActionListener() {
+                               public void actionPerformed(ActionEvent e) {simulator.reset(); }
+                           });
         setLocation(100, 50);
         
         fieldView = new FieldView(height, width);
@@ -56,13 +72,31 @@ public class SimulatorView extends JFrame implements View
         JPanel infoPane = new JPanel(new BorderLayout());
             infoPane.add(stepLabel, BorderLayout.WEST);
             infoPane.add(infoLabel, BorderLayout.CENTER);
+        JPanel sideBar = new JPanel(new GridLayout(6,1));
+            sideBar.add(weatherLabel);
+            sideBar.add(timeLabel);
+            sideBar.add(simulateOneStepBtn);
+            sideBar.add(resetBtn);
+            
+        sideBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         contents.add(infoPane, BorderLayout.NORTH);
+        contents.add(sideBar, BorderLayout.WEST);
         contents.add(fieldView, BorderLayout.CENTER);
         contents.add(population, BorderLayout.SOUTH);
         pack();
         setVisible(true);
     }
     
+    /**
+     * 
+     */
+    private String produce20CharacterPadding(String s){
+        String res = s;
+        for (int i = 0; i < 20-s.length(); i++){
+            res += " ";
+        }
+        return res;
+    }
     /**
      * Define a color to be used for a given class of animal.
      * @param animalClass The animal's Class object.
@@ -110,6 +144,10 @@ public class SimulatorView extends JFrame implements View
         stepLabel.setText(STEP_PREFIX + step);
         stats.reset();
         
+        String weatherText = produce20CharacterPadding(WEATHER_PREFIX + field.getWeatherCondition());
+        String timeString = produce20CharacterPadding(TIME_PREFIX + field.getTimeString());
+        weatherLabel.setText(weatherText);
+        timeLabel.setText(timeString);
         fieldView.preparePaint();
 
         for(int row = 0; row < field.getDepth(); row++) {

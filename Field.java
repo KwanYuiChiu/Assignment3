@@ -278,6 +278,16 @@ public class Field
     {
         return width;
     }
+    /**
+     * This method returns the weather in the simulation
+     * @return the weather in the simulation
+     */
+    public String getTimeString(){
+        if (isDay()){
+            return "Day time";
+        }
+        return "Night time";
+    }
     
     /**
      * This method returns the weather in the simulation
