@@ -25,7 +25,7 @@ public class Simulator
     // The probability that a rabbit will be created in any given grid position.
     private static final double RABBIT_CREATION_PROBABILITY = 0.04;    
     // The probability that a rabbit will be created in any given grid position.
-    private static final double GIRAFFE_CREATION_PROBABILITY = 0.04;    
+    private static final double GIRAFFE_CREATION_PROBABILITY = 0.0399;    
     // The probability that a mouse will be created in any given grid position.
     private static final double MOUSE_CREATION_PROBABILITY = 0.04;    
     // The probability that a rabbit will be created in any given grid position.
@@ -72,7 +72,7 @@ public class Simulator
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width);
+        view = new SimulatorView(depth, width,this);
         view.setColor(Rabbit.class, Color.ORANGE);
         view.setColor(Fox.class, Color.BLUE);
         view.setColor(Giraffe.class, Color.MAGENTA);
@@ -103,6 +103,7 @@ public class Simulator
      */
     public void runLongSimulation()
     {
+        System.out.println("button reached");
         simulate(4000);
     }
     
@@ -115,7 +116,7 @@ public class Simulator
     {
         for(int step = 1; step <= numSteps && view.isViable(field); step++) {
             simulateOneStep();
-            // delay(60);   // uncomment this to run more slowly
+            delay(30);   // uncomment this to run more slowly
         }
     }
     
