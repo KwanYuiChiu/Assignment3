@@ -26,10 +26,12 @@ public class SimulatorView extends JFrame implements View
     private final String POPULATION_PREFIX = "Population: ";
     private JLabel stepLabel, population, infoLabel;
     
+    // Components used for the sidebar
     private final String WEATHER_PREFIX = "Weather: ";
     private final String TIME_PREFIX = "Time: ";
     private JLabel weatherLabel,timeLabel;
     private JButton simulateOneStepBtn,resetBtn;
+    
     private FieldView fieldView;
     
     // A map for storing colors for participants in the simulation
@@ -51,7 +53,9 @@ public class SimulatorView extends JFrame implements View
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
-        
+        /*
+         * Initialisation for the GUI componenets for the sidebar
+         */
         weatherLabel = new JLabel(WEATHER_PREFIX + produce20CharacterPadding(""), JLabel.CENTER);
         timeLabel = new JLabel(TIME_PREFIX + produce20CharacterPadding(""), JLabel.CENTER);
         simulateOneStepBtn = new JButton("Simulate one step");
@@ -63,6 +67,7 @@ public class SimulatorView extends JFrame implements View
         resetBtn.addActionListener(new ActionListener() {
                                public void actionPerformed(ActionEvent e) {simulator.reset(); }
                            });
+        
         setLocation(100, 50);
         
         fieldView = new FieldView(height, width);
@@ -88,7 +93,10 @@ public class SimulatorView extends JFrame implements View
     }
     
     /**
+     * A private method to produce a padded string text
      * 
+     * @param String the string intended to be displayed
+     * @return String padded with space on the right to make it a 20 chars long
      */
     private String produce20CharacterPadding(String s){
         String res = s;
