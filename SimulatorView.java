@@ -28,6 +28,7 @@ public class SimulatorView extends JFrame implements View
     private final String POPULATION_PREFIX = "Population: ";
     private JLabel stepLabel, population, infoLabel;
     
+    // Components used for the sidebar
     private final String WEATHER_PREFIX = "Weather: ";
     private final String TIME_PREFIX = "Time: ";
     private JLabel weatherLabel,timeLabel;
@@ -57,7 +58,9 @@ public class SimulatorView extends JFrame implements View
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         setLocation(100, 50);
-        
+        /*
+         * Initialisation for the GUI componenets for the sidebar
+         */
         weatherLabel = new JLabel(WEATHER_PREFIX + produce20CharacterPadding(""), JLabel.CENTER);
         timeLabel = new JLabel(TIME_PREFIX + produce20CharacterPadding(""), JLabel.CENTER);
         
@@ -121,7 +124,10 @@ public class SimulatorView extends JFrame implements View
     }
     
     /**
+     * A private method to produce a padded string text
      * 
+     * @param String the string intended to be displayed
+     * @return String padded with space on the right to make it a 20 chars long
      */
     private String produce20CharacterPadding(String s){
         String res = s;
