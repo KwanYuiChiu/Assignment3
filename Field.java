@@ -39,7 +39,7 @@ public class Field
     }
     
     /**
-     * Increase the numner of steps and update the weather
+     * Increase the number of steps and update the weather
      */
     public void increaseStep(){
         step++;

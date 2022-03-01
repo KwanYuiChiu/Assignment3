@@ -3,6 +3,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.Arrays;
 
 /**
  * A graphical view of the simulation grid.
@@ -46,8 +48,7 @@ public class SimulatorView extends JFrame implements View
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
-        
-        setLocation(100, 50);
+        setLocation(20, 50);
         
         fieldView = new FieldView(height, width);
 
@@ -59,6 +60,7 @@ public class SimulatorView extends JFrame implements View
         contents.add(infoPane, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
         contents.add(population, BorderLayout.SOUTH);
+        
         pack();
         setVisible(true);
     }
